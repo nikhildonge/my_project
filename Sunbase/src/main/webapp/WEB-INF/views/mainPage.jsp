@@ -8,7 +8,19 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style type="text/css">
 
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table.center {
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+</style>
 </head>
 <body>
 	<div style="text-align: center;">
@@ -26,7 +38,7 @@
 		    <option value="phone">Phone</option>
 	    </select>
 	    <input type="text" name="search_by" id="search_by" disabled="disabled"><br><br>
-	    <table border="" id="customerTable" style="text-align: center;">
+	    <table border="" id="customerTable"  class="center">
 	        <thead style="background-color: blue; color: white;">
 	            <tr>
 	                <th>ID</th>
@@ -49,21 +61,21 @@
 	</div>
 
     <div style="display: none; text-align: center;" id="formDiv">
-    <form action="" id="myForm">
-    <h4>Customer Details</h4>
-    <input type="hidden" id="id" name="id" placeholder="" >
-    <input type="text"   id="fname" name="fname" placeholder="First Name " >
-    <input type="text"   id="lname" name="lname" placeholder="Last Name " ><br><br>
-    <input type="text"   id="street" name="street" placeholder="Street" >
-    <input type="text"   id="address" name="address" placeholder="Address" ><br><br>
-    <input type="text"   id="city" name="city" placeholder="City" >
-    <input type="text"   id="state" name="state" placeholder="State" ><br><br>
-    <input type="text"   id="email" name="email" placeholder="Email" >
-    <input type="text"   id="phone" name="phone" placeholder="Phone" ><br><br>
-    <div>
-    </div>
-    <button type="submit" style="text-align: center;" class="anchor" onclick="saveCustomerData();">Submit</button>
-    </form>
+	    <form action="" id="myForm">
+		    <h4>Customer Details</h4>
+		    <input type="hidden" id="id" name="id" placeholder="" >
+		    <input type="text"   id="fname" name="fname" placeholder="First Name " >
+		    <input type="text"   id="lname" name="lname" placeholder="Last Name " ><br><br>
+		    <input type="text"   id="street" name="street" placeholder="Street" >
+		    <input type="text"   id="address" name="address" placeholder="Address" ><br><br>
+		    <input type="text"   id="city" name="city" placeholder="City" >
+		    <input type="text"   id="state" name="state" placeholder="State" ><br><br>
+		    <input type="text"   id="email" name="email" placeholder="Email" >
+		    <input type="text"   id="phone" name="phone" placeholder="Phone" ><br><br>
+		    
+		    <button type="submit" style="text-align: center;" class="anchor" onclick="saveCustomerData();">Submit</button>
+		     <button type="button" style="text-align: center;" class="anchor" onclick="closeForm();">Close</button>
+	    </form>
     </div>
     
     
@@ -97,7 +109,7 @@
  	
     function setFetchCustomerData() {
         $.ajax({
-            url: "${pageContext.request.contextPath}/abc/getAllCustomer",
+            url: "${pageContext.request.contextPath}/customer/getAllCustomer",
             method: "GET",
             dataType: "json",
             contentType: "application/json",
@@ -144,10 +156,8 @@
 
             console.log("formObj: ", formObj);
 
-            // Now you can send the formObj to your server using an AJAX request
-             Example:
              $.ajax({
-                 url: "${pageContext.request.contextPath}/abc/saveCustomer",
+                 url: "${pageContext.request.contextPath}/customer/saveCustomer",
                  method: "POST",
                  data: JSON.stringify(formObj),
                  dataType: "json",
@@ -160,7 +170,6 @@
 						  html: 'Data Saved SuccessFully for Id: '+response,
 						  confirmButtonText: 'OK',
 						  cancelButtonColor: '#d33',
-						  //showCancelButton: true,
 						  allowEnterKey: true,
 						  allowEscapeKey : true,
 						});
@@ -178,7 +187,7 @@
     
     function updateCustomerData(id) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/abc/getbyId/"+id,
+            url: "${pageContext.request.contextPath}/customer/getbyId/"+id,
             method: "GET",
             dataType: "json",
             contentType: "application/json",
@@ -209,7 +218,6 @@
     
     
     function deleteCustomer(id){
-    	//alert("okay "+id)
     	Swal.fire({
 			title : "Alert",
 			html : "Do you want to delete data?",
@@ -223,7 +231,6 @@
 				
 			}
 		}).then((result) => {
-		  /* Read more about isConfirmed, isDenied below */
 		  if (result.isConfirmed) {
 			 
 			  deleteCustomerData(id);
@@ -235,10 +242,8 @@
     }
     
     function deleteCustomerData(id) {
-    	//alert("id");
         $.ajax({
-            url: "${pageContext.request.contextPath}/abc/deleteById/"+id,
-            //method: "POST",.
+            url: "${pageContext.request.contextPath}/customer/deleteById/"+id,
             type: "DELETE",
             dataType: "json",
             contentType: "application/json",
@@ -251,7 +256,6 @@
 					  html: 'Customer Deleted SuccessFully for Id: '+customerId,
 					  confirmButtonText: 'OK',
 					  cancelButtonColor: '#d33',
-					  //showCancelButton: true,
 					  allowEnterKey: true,
 					  allowEscapeKey : true,
 					});
@@ -262,13 +266,17 @@
             }
         });
     }
+    
+    function closeForm(){
+    	resetCustomerData();
+    	$("#formDiv").hide();
+    }
 
     
     function searchByProperty(propertyName,propertyValue) {
-    	//alert("id");
     	
         $.ajax({
-            url: "${pageContext.request.contextPath}/abc/search",
+            url: "${pageContext.request.contextPath}/customer/search",
             data: { column: propertyName, value: propertyValue },
             method: "GET",
             dataType: "json",

@@ -28,11 +28,24 @@ public class CustomerService {
 	private UserRepository userRepo;
 
 	
+	// User Registration
+		public void createUser(UserReg userReg) {
+			// TODO Auto-generated method stub
+			userRepo.save(userReg);
+		}
+
+		
+		// User Login
+		public UserReg findByEmailAndPassword(String email, String password) {
+	        return userRepo.checkEmailAndPassword(email, password);
+	    }
+	
+	//createCustomer
 	 public void createCustomer(Customer customer) {
 	         customerRepository.save(customer);
 	    }
 
-
+//updateCourse
 	public void updateCourse(int id, Customer cust) {
 		// TODO Auto-generated method stub
 		
@@ -41,6 +54,7 @@ public class CustomerService {
 	}
 
 
+	// getAllCustomer
 	public List<Customer> getAllCustomer() {
 		// TODO Auto-generated method stub
 		List<Customer> custs = new ArrayList<Customer>();
@@ -49,6 +63,7 @@ public class CustomerService {
 	}
 
 
+	//GetcustbyId
 	public Customer GetcustbyId(int custid) {
 		// TODO Auto-generated method stub
 		
@@ -57,12 +72,14 @@ public class CustomerService {
 	}
 
 
+	//deleteById
 	public void deleteById(int custId) {
 		// TODO Auto-generated method stub
 		customerRepository.deleteById(custId);
 	}
 	 
 
+	//searching
 	public List<Customer> search(String column, String value) {
         switch (column) {
 		
@@ -72,7 +89,6 @@ public class CustomerService {
 		case "lname":
 			return 
 				customerRepository.findByLnameContaining(value);
-		
         case "street":
             return customerRepository.findByStreetContaining(value);
         case "address":
@@ -90,32 +106,5 @@ public class CustomerService {
                 throw new IllegalArgumentException("Invalid search column: " + column);
         }
     }
-	
-	public Page<Customer> searchWithPaginationAndSorting(String column, String value, Pageable pageable) {
-        return customerRepository.findAll((Specification<Customer>) (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.like(root.get(column), "%" + value + "%");
-            return predicate;
-        }, pageable);
-    }
 
-
-	public void createUser(UserReg userReg) {
-		// TODO Auto-generated method stub
-		userRepo.save(userReg);
-	}
-
-
-	/*
-	 * public boolean existsByEmail(String email) { // TODO Auto-generated method
-	 * stub userRepo.findByEmail(email); return false; }
-	 * 
-	 * 
-	 * public boolean existsByPassword(String password) { // TODO Auto-generated
-	 * method stub userRepo.findByPassword(password); return false; }
-	 */
-	
-	public UserReg findByEmailAndPassword(String email, String password) {
-        return userRepo.checkEmailAndPassword(email, password);
-    }
-	
 }
